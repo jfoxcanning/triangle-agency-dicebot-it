@@ -1,0 +1,31 @@
+{
+  "name": "tadicejs-it",
+  "version": "1.0.0",
+  "description": "Un bot per automatizzare il lancio dei dadi per Triangle Agency, di Haunted Table Games.",
+  "keywords": [],
+  "homepage": "https://github.com/jfoxcanning/triangle-agency-dicebot-it#readme",
+  "bugs": {
+    "url": "https://github.com/jfoxcanning/triangle-agency-dicebot-it/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jfoxcanning/triangle-agency-dicebot-it.git"
+  },
+  "license": "ISC",
+  "author": "Jazz Fox-Canning",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@nastyox/rando.js": "^2.0.6",
+    "discord.js": "^14.12.1",
+    "dotenv": "^16.3.1",
+    "git": "^0.1.5",
+    "nvm": "^0.0.4"
+  },
+  "devDependencies": {
+    "eslint": "^8.52.0"
+  }
+}
