@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, ActionRow } = require("discord.js");
+const { SlashCommandBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, ActionRow, MessageFlags } = require("discord.js");
 const {rando} = require(`@nastyox/rando.js`);
 
 module.exports = {
@@ -23,7 +23,7 @@ module.exports = {
             case `X2`: // old d100
                 await interaction.reply({
                     content: `Questo Documento in Playwall era valido solo nell'Edizione Instabile di Triangle Agency. Controlla la il manuale aggiornato e riprova.`,
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
 
                 break;
@@ -206,7 +206,7 @@ module.exports = {
                         else if (threesTotal == 7) {
                             modalResponse.fetchReply()
                             .then(modalReply => {
-                                modalReply.reply({content: `🧿 **SCAT3NATI!** 🧿`, ephemeral: false});
+                                modalReply.reply({content: `🧿 **SCAT3NATI!** 🧿`});
                             });
                         }
                     })
@@ -599,7 +599,7 @@ module.exports = {
                         var d20Roll = rando(1,20);
 
                         // TEST DATA
-                        //d20roll = 3;
+                        //d20Roll = 3;
                         //qas = 1;
 
                         var d20Total = d20Roll + qas;
@@ -617,13 +617,13 @@ module.exports = {
                             isTriscendent = true;
                         }
                         else if (d20Roll == 7) {
-                            commentaryOutput = `🔵 Fallimento automatico. Generi ${d20roll} Caos. 🔵${failureText}`;
+                            commentaryOutput = `🔵 Fallimento automatico. Generi ${d20Roll} Caos. 🔵${failureText}`;
                         }
                         else if (d20Total > 10) {
                             commentaryOutput = `${successText}`;
                         }
                         else { // d20Total in failure range
-                            commentaryOutput = `Fallimento. Generi ${d20roll} Caos.${failureText}`;
+                            commentaryOutput = `Fallimento. Generi ${d20Roll} Caos.${failureText}`;
                         }
                         
                         // ---------- d20 OUTPUT
@@ -647,7 +647,7 @@ module.exports = {
 
                 await interaction.reply({
                     content: `Hai **${extras} Comparse** a disposizione.\n*Tieni traccia in autonomia delle Comparse rimaste!*\n> **Se Veenilla (lo sviluppatore di AgencyOS) o gli Agenti di NessunDove sono nella partita,** questo tiro non è valido. Ringraziali e usa un altro bot per chiamare le Comparse.`,
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
 
                 break;

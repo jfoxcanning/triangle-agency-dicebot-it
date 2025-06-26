@@ -1,10 +1,10 @@
 const { rando } = require("@nastyox/rando.js");
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, MessageFlags } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('Tira')
-        .setDescription('Tira 6d4 per Alterare la Realtà.')
+        .setName(`tira`)
+        .setDescription(`Tira 6d4 per Alterare la Realtà.`)
         .addStringOption(option => 
             option.setName(`obiettivo`)
                 .setDescription(`Perché vuoi tirare i dadi?`)
@@ -140,7 +140,7 @@ module.exports = {
         await interaction.reply(`${reasonOutput}${resultsOutput}\n${commentaryOutput.trim()}`);
         //triscendence followup
         if (isTriscendent) {
-            await interaction.followUp({ content: `🔺🔺🔺**TRISCENDENZA!!!**🔺🔺🔺`, ephemeral: false});
+            await interaction.followUp({ content: `🔺🔺🔺**TRISCENDENZA!!!**🔺🔺🔺`, flags: MessageFlags.Ephemeral });
         }
     }
 };
