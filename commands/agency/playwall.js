@@ -79,8 +79,8 @@ module.exports = {
                         var d6roll = rando(1,6);
 
                         // TEST DATA
-                        results = [3,1,1,1,1,1];
-                        d6roll = 3;
+                        // results = [3,1,1,1,1,1];
+                        // d6roll = 3;
                         
                         //sort initial results
                         var threes =[];
