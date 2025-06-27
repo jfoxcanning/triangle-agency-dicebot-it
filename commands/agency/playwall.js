@@ -18,7 +18,7 @@ module.exports = {
 
         switch(pd) {
             // unstable codes
-            case `U1`: //old 6-Sided
+            case `U1`: // old 6-Sided
             case `N2`: // old 10-sided
             case `X2`: // old d100
                 await interaction.reply({
@@ -79,8 +79,8 @@ module.exports = {
                         var d6roll = rando(1,6);
 
                         // TEST DATA
-                        //results = [1,2,3,1,2,3];
-                        //d6roll = 3;
+                        results = [3,1,1,1,1,1];
+                        d6roll = 3;
                         
                         //sort initial results
                         var threes =[];
@@ -108,7 +108,6 @@ module.exports = {
                                 break;
                         }
 
-                        var startStable = (threesTotal > 0 && threesTotal % 3 == 0);
                         var isTriscendent = (threesTotal == 3);
                         
                         if (!isTriscendent) { //if triscendent, do not adjust rolls
@@ -169,7 +168,7 @@ module.exports = {
                             threesText = `Fallimento.`;
                             commentaryTag = `🔵`;
                         } else {
-                            threesText = `Successo: ${threes.length} tre!`;
+                            threesText = `Successo: ${threesTotal} tre!`;
                         }
                 
                         // assemble failures commentary
@@ -263,8 +262,8 @@ module.exports = {
                         var d8roll = rando(1,8);
 
                         // TEST DATA
-                        // results = [3,1,1,1,1,1];
-                        // d8roll = 6;
+                        // results = [3,3,1,1,1,1];
+                        // d8roll = 3;
                         
                         //sort initial results
                         var threes = [];
@@ -304,18 +303,9 @@ module.exports = {
                                 if (threesTotal > 0)
                                     threesTotal--;
                             }
-
-                            if (minusTotal != 3) // update minus
-                                minusTotal = threesTotal - d8Threes;
-                            
-                            if (!plusTotal != 3) // update plus
-                                plusTotal = threesTotal + d8Threes;
                         }
                         chaosTotal += initialBurnout;
 
-                        //stability check
-                        var isStable = (minusTotal > 0 && minusTotal % 3 == 0) || (threesTotal > 0 && threesTotal % 3 == 0) || (plusTotal > 0 && plusTotal % 3 == 0);
-                
                         // ----------- RESULTS ASSEMBLY
                         var compiledResults = ``;
                         var threesTag = `**`;
@@ -407,6 +397,9 @@ module.exports = {
                                 threesText = threesText.concat(` Success${plural}!`);
                             }
                         }
+
+                        //stability check
+                        var isStable = (minusTotal > 0 && minusTotal % 3 == 0) || (threesTotal > 0 && threesTotal % 3 == 0) || (plusTotal > 0 && plusTotal % 3 == 0);
                 
                         // assemble failures commentary
                         var chaosNumberText = `${chaosTotal}`;
@@ -497,7 +490,7 @@ module.exports = {
                 interaction.showModal(d10Modal);
                 interaction.awaitModalSubmit({ time: 120_000 })
                     .then(modalResponse => {
-                        var includeD6 = (modalResponse.fields.getTextInputValue(`d6Input`).toLowerCase() === `y`);
+                        var includeD6 = (modalResponse.fields.getTextInputValue(`d6Input`).toLowerCase() === `s`);
                         var initialBurnout = parseInt(modalResponse.fields.getTextInputValue(`burnoutInput`));
                         if (initialBurnout < 0)
                             initialBurnout = 0;
@@ -508,7 +501,7 @@ module.exports = {
 
                         // TEST DATA
                         //d10roll = 3;
-                        //d6roll = 3;
+                        //d6roll = 4;
 
                         var resultsOutput = `Esito: < **${d10roll}** >`;
 
@@ -532,14 +525,15 @@ module.exports = {
                             }
                         }
 
-                        var isTriscendent = (successTotal == 3);
-
-                        // apply burnout
+                        // apply burnout IF not unleashed
                         var hadBurnout = initialBurnout > 0;
-                        for (b = initialBurnout; b > 0; b--) {
-                            if (successTotal > 0)
-                                successTotal--;
-                            failureTotal++;
+                        var unleashed = (successTotal == 7);
+                        if (!unleashed) {
+                            for (b = initialBurnout; b > 0; b--) {
+                                if (successTotal > 0)
+                                    successTotal--;
+                                failureTotal++;
+                            }
                         }
 
                         if (d10roll == 3) {
@@ -549,7 +543,13 @@ module.exports = {
                         // ---------- d10 COMMENTARY
                         var commentaryOutput = ``;
 
-                        var burnoutText = hadBurnout ? ` Burnout applicato.` : ``;
+                        var burnoutText = ``;
+                        if (hadBurnout) {
+                            if (unleashed)
+                                burnoutText = ` Burnout neutralizzato.`;
+                            else
+                                burnoutText = ` Burnout applicato.`;
+                        }
 
                         if (d10roll == 3) {
                             commentaryOutput = `🔺 Fallimento. Generi ${failureTotal} Caos.${burnoutText} 🔺`;
@@ -560,14 +560,8 @@ module.exports = {
                 
                         // ---------- SEND OUTPUT
                         modalResponse.reply(`${resultsOutput}\n${commentaryOutput}`);
-                        // triscendence and unleash check
-                        if (isTriscendent) {
-                            modalResponse.fetchReply()
-                            .then(modalReply => {
-                                modalReply.reply(`🔺🔺🔺**TRISCENDENZA!!!**🔺🔺🔺`);
-                            });
-                        }
-                        else if (successTotal == 7) {
+                        // unleash check
+                        if (unleashed) {
                             modalResponse.fetchReply()
                             .then(modalReply => {
                                 modalReply.reply(`🧿 **SCAT3NATI!** 🧿`);
@@ -599,7 +593,7 @@ module.exports = {
                         var d20Roll = rando(1,20);
 
                         // TEST DATA
-                        //d20Roll = 3;
+                        //d20Roll = 11;
                         //qas = 1;
 
                         var d20Total = d20Roll + qas;
@@ -609,7 +603,7 @@ module.exports = {
                         // ---------- d20 COMMENTARY
                         var commentaryOutput = ``;
                         var successText= `Successo! La tua storia personale è stata sovrascritta.`;
-                        var failureText = `\nPerdi tutti i CQ in questa Qualità. Scegli un pezzo della tua storia personale: non è mai avvenuto.`;
+                        var failureText = `Scegli un pezzo della tua storia personale: non è mai avvenuto.`;
                         var isTriscendent = false;
 
                         if (d20Roll == 3) {
@@ -617,13 +611,13 @@ module.exports = {
                             isTriscendent = true;
                         }
                         else if (d20Roll == 7) {
-                            commentaryOutput = `🔵 Fallimento automatico. Generi ${d20Roll} Caos. 🔵${failureText}`;
+                            commentaryOutput = `🔵 Fallimento automatico. Generi ${d20Roll} Caos. 🔵\nPerdi tutti i CQ in questa Qualità. ${failureText}`;
                         }
                         else if (d20Total > 10) {
                             commentaryOutput = `${successText}`;
                         }
                         else { // d20Total in failure range
-                            commentaryOutput = `Fallimento. Generi ${d20Roll} Caos.${failureText}`;
+                            commentaryOutput = `Fallimento. Generi ${d20Roll} Caos.\n${failureText}`;
                         }
                         
                         // ---------- d20 OUTPUT
