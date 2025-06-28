@@ -22,7 +22,7 @@ module.exports = {
             case `N2`: // old 10-sided
             case `X2`: // old d100
                 await interaction.reply({
-                    content: `Questo Documento in Playwall era valido solo nell'Edizione Instabile di Triangle Agency. Controlla la il manuale aggiornato e riprova.`,
+                    content: `Questo Documento in Playwall era valido solo nell'Edizione Instabile di Triangle Agency. Controlla il manuale aggiornato e riprova.`,
                     flags: MessageFlags.Ephemeral
                 });
 
@@ -80,7 +80,7 @@ module.exports = {
 
                         // TEST DATA
                         // results = [3,1,1,1,1,1];
-                        // d6roll = 3;
+                        // d6roll = 6;
                         
                         //sort initial results
                         var threes =[];
@@ -158,7 +158,6 @@ module.exports = {
                 
                         // ----------- COMMENTARY
                         var commentaryTag = isStable ? `🔺` : ``;
-                        var plural = ``;
                 
                         var threesText = ``;
                         var chaosText = ``;
@@ -174,7 +173,7 @@ module.exports = {
                         // assemble failures commentary
                         var chaosNumberText = `${chaosTotal}`;
                         if (chaosTotal == 0 || isStable) {
-                            chaosNumberText = `Zero`;
+                            chaosNumberText = `0`;
                         }
                 
                         chaosText = `Generi ${chaosNumberText} Caos.`;
@@ -414,14 +413,14 @@ module.exports = {
                         // burnout check
                         var burnoutText = ``;
                         if (hadBurnout) {
-                            var maybeText = (d8Threes > 0 && timesBurnoutApplied != maxBurnout) ? `se il Successo è Stabile ` : ``;
+                            var maybeText = (d8Threes > 0 && timesBurnoutApplied != maxBurnout) ? `Se il Successo è Stabile, ` : ``;
                             var burnoutVerb = `applicato`;
                             //stability check
                             if (isStable) {
                                 burnoutVerb = `neutralizzato`;
                             }
                 
-                            burnoutText = ` Burnout ${maybeText}${burnoutVerb}.`;
+                            burnoutText = ` ${maybeText}Burnout ${burnoutVerb}.`;
                         }
                 
                         commentaryOutput = commentaryOutput.concat(`${commentaryTag} ${threesText} ${chaosText}${burnoutText} ${commentaryTag}`);
